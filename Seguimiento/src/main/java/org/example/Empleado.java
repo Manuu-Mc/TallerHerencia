@@ -25,4 +25,43 @@ public abstract class Empleado {
         this.descuentoSalud = descuentoSalud;
         this.descuentoPension = descuentoPension;
     }
+    public float calcularBonificacionCategoria() {
+        float porcentaje = 0;
+        switch (this.categoria) {
+            case JUNIOR:
+                porcentaje = 0.05f;
+                break;
+            case SEMI_SENIOR:
+                porcentaje = 0.10f;
+                break;
+            case SENIOR:
+                porcentaje = 0.15f;
+                break;
+        }
+        return this.salarioBase * porcentaje;
+    }
+    public void mostrarInformacion() {
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Documento: " + documento);
+        System.out.println("Categoría: " + categoria);
+    }
+    public abstract ResumenPago generarResumenPago();
+
+    public abstract float calcularSalarioBruto();
+
+    protected float calcularDescuentos() {
+        float bruto = calcularSalarioBruto();
+        float salud = bruto * (this.descuentoSalud / 100);
+        float pension = bruto * (this.descuentoPension / 100);
+        return salud + pension;
+    }
+
+    protected float calcularSalarioNeto() {
+        return calcularSalarioBruto() - calcularDescuentos();
+    }
+
+    public Object getDocumento() {
+        return this.documento;
+    }
 }
+
